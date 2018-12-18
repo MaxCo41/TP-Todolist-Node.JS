@@ -19,7 +19,7 @@ app.get('/', function(req, res){
 
 // Redirige vers la todolist si page demandée pas trouvé
 app.use(function(req, res, next){
-    res.redirect('/todo');
+    res.redirect('/');
 })
 
 //echange avec socket.io
