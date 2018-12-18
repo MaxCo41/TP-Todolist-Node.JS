@@ -1,12 +1,14 @@
 {
-    "name": "TP-Todolist-Node.JS",
+    "name": "TP-Todolist-temps-réel-Node.JS",
     "version": "0.1.0",
     "dependencies": {
         "body-parser": "~1.10.1",
         "cookie-session": "^1.3.2",
         "ejs": "~2.1.4",
-        "express": "^4.16.4"
+        "ent": "^2.2.0",
+        "express": "^4.16.4",
+        "socket.io": "^2.2.0"
     },
     "author": "MaxCo41 <maxime.collin41@gmail.com>",
-    "description": "Un gestionnaire de todolist ultra basique"
+    "description": "Un gestionnaire de todolist en temps réel avec Node.JS"
 }

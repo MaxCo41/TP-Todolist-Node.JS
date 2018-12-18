@@ -11,18 +11,60 @@
     <body>
         <h1>Ma todolist</h1>
 
-        <ul>
-        <% todolist.forEach(function(todo, index) { %>
-            <li><a href="/todo/supprimer/<%= index %>">✘</a> <%= todo %></li>
-        <% }); %>
+        <ul id="todolist">
+            
         </ul>
 
-        <form action="/todo/ajouter/" method="post">
+        <form action="/todo" method="post" id="todoForm">
             <p>
-                <label for="newtodo">Que dois-je faire ?</label>
-                <input type="text" name="newtodo" id="newtodo" autofocus />
+                <label for="newTodo">Que dois-je faire ?</label>
+                <input type="text" name="newTodo" id="newTodo" autofocus />
                 <input type="submit" />
             </p>
         </form>
+
+        <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+
+        <script>
+        
+        var socket = io.connect('http://localhost:8080');
+
+        //Afficher les tâches
+        socket.on('todolist', function(todolist){
+            $('#todolist').empty(); //resfresh list
+            todolist.forEach(function(todo, index){
+                insertTodo(todo, index);
+            });
+        });
+
+        // a l'envoi du formulaire, todo est envoyé
+        $('#todoForm').submit(function (){
+            var todo = $('#newTodo').val();
+            console.log(todo);
+            
+            socket.emit('addTodo', todo);
+            insertTodo(todo, index);
+            $('#newTodo').val('').focus();
+            return false;
+        });
+
+        // Quand message arrive, insertion dans page
+        socket.on('addTodo', function(data){
+            insertTodo(data.todo, data.index);
+        });
+
+        //Fonction insertTodo
+        function insertTodo(todo, index){
+            $('#todolist').append('<li><a class="delete" href="#" data-index"' + index + '">✘</a>' + todo + '</li>');
+        }
+        // Supprimer la todo
+        $('body').on('click', '.delete', function(){
+            socket.emit('deleteTodo', $(this).data('index'));
+        })
+
+        
+        
+        </script>
     </body>
 </html>
